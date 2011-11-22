@@ -1,0 +1,8 @@
+--- 
+format: 1
+handler: 
+  commit: bc7aeabe6c8737e668b128891abdc608a86ba78f
+  branch: master
+lock: false
+repository_url: git@github.com:silverstripe-themes/silverstripe-dew.git
+repository_class: Piston::Git::Repository
