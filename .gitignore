@@ -5,3 +5,8 @@ silverstripe-cache
 .buildpath
 .project
 .settings
+sapphire
+cms
+mssql
+sqlite3
+postgresql
