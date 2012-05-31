@@ -23,11 +23,11 @@
 # themes/mytheme git://local.server/themes/mytheme.git false
 
 
-cms:master git@github.com:silverstripe-droptables//silverstripe-cms.git
-framework:master git@github.com:silverstripe-droptables//sapphire.git
-themes/ssexpress:master git@github.com:silverstripe-droptables/ssexpress-theme.git
-themes/module_bootstrap git@github.com:silverstripe-droptables/sass-twitter-bootstrap.git
-testdata:master git@github.com:silverstripe-droptables/silverstripe-testdata.git
+cms:ssexpress git@github.com:silverstripe-droptables/silverstripe-cms.git
+framework:ssexpress git@github.com:silverstripe-droptables/sapphire.git
+themes/ssexpress:ssexpress git@github.com:silverstripe-droptables/ssexpress-theme.git
+themes/module_bootstrap:ssexpress git@github.com:silverstripe-droptables/sass-twitter-bootstrap.git
+testdata:ssexpress git@github.com:silverstripe-droptables/silverstripe-testdata.git
 
 # The following are the some other modules you might like to import
 
