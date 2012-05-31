@@ -26,7 +26,7 @@
 cms:master git://github.com/silverstripe/silverstripe-cms.git
 framework:master git://github.com/silverstripe/sapphire.git
 themes/ssexpress:master git@github.com:silverstripe-droptables/ssexpress-theme.git
-themes/ssexpress/bootstrap git://github.com/jlong/sass-twitter-bootstrap.git
+themes/_bootstrap git@github.com:silverstripe-droptables/sass-twitter-bootstrap.git
 testdata:master git://github.com/mateusz/silverstripe-testdata.git
 
 # The following are the some other modules you might like to import
