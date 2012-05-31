@@ -1,5 +1,9 @@
-This website documents how to work with SilverStripe Express.
+This page documents how to work with SilverStripe Express.
+
+### How to use SS Express
+
+* [Instructions for web developers](usage.md)
 
 ### SS Express development
 
-* [How to work with the repo](ss-express-dev.md)
+* [Instructions for contributors](development.md)
