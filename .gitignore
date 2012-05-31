@@ -10,5 +10,5 @@ silverstripe-cache
 cms
 framework
 themes/ssexpress
-themes/_bootstrap
+themes/module_bootstrap
 testdata
