@@ -7,3 +7,9 @@ silverstripe-cache
 .settings
 .idea
 .DS_Store
+cms
+framework
+themes/ssexpress
+testdata
+compass
+themes/ssexpress/bootstrap
