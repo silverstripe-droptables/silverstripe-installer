@@ -8,18 +8,16 @@ Prerequisites: `phing`, `Pear::VersionControl_Git`
 * Check out ssexpress branch: `git checkout ssexpress`
 * Load all modules in writeable mode: `phing update_modules` (they default to ssexpress branch as well)
 
-We currently work on ssexpress branch on all modules, so we can switch the version with phing easily.
+We currently work on `ssexpress` branch on all modules and the root repo, so we can switch the versions all across the board easily.
 
-## Packaging and releasing
+## New release
 
 We currently release the package as a tar.gz archive, while tagging all the related modules.
-
-### New release
 
 * Tag the release: `phing tag -Dtagname ssexpress-0.1.0 -DincludeBaseDir yes`, say yes to push the tags to origin
 * Create the archive: `phing archive -Dversion ssexpress-0.1.0 -Darchivedest releases -Darchivename ssexpress-0.1.0 -Darchivetype tar.gz`
 
-### Re-releasing
+## Re-releasing
 
 * Checkout the release tag: `phing checkout -Dtagname ssexpress-0.1.0 -DincludeBaseDir yes`
 * Create the archive `phing archive -Dversion ssexpress-0.1.0 -Darchivedest releases -Darchivename ssexpress-0.1.0 -Darchivetype tar.gz`
