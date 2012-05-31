@@ -4,11 +4,13 @@
 
 Prerequisites: `phing`, `Pear::VersionControl_Git`
 
-* Clone the repository
-* Check out ssexpress branch: `git checkout ssexpress`
-* Load all modules in writeable mode: `phing update_modules` (they default to ssexpress branch as well)
-
 We currently work on `ssexpress` branch on all modules and the root repo, so we can switch the versions all across the board easily.
+
+To set up the developer's version of the repo:
+
+* Clone the repository: `git@github.com:silverstripe-droptables/silverstripe-installer.git`
+* Make sure you are on correct branch: `git checkout ssexpress`
+* Load all modules in writeable mode: `phing update_modules` (they default to ssexpress branch as well)
 
 ## New release
 
