@@ -14,7 +14,7 @@ We work on `ssexpress` branch on all modules and the root repo, so we can switch
 * Make sure you are on correct branch: `git checkout ssexpress`
 * Load all modules in writeable mode: `phing update_modules` (they default to ssexpress branch as well)
 
-### Without write access to silverstrpe-droptables
+### Without write access to silverstripe-droptables
 
 * Fork the root repo and all module repos (check dependent-modules.default for full list)
 * Clone your fork, checkout ssexpress branch
