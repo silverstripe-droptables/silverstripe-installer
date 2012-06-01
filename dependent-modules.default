@@ -28,6 +28,7 @@ framework:ssexpress git@github.com:silverstripe-droptables/sapphire.git
 themes/ssexpress:ssexpress git@github.com:silverstripe-droptables/ssexpress-theme.git
 themes/module_bootstrap:ssexpress git@github.com:silverstripe-droptables/sass-twitter-bootstrap.git
 testdata:ssexpress git@github.com:silverstripe-droptables/silverstripe-testdata.git
+iframe:ssexpress git@github.com:silverstripe-droptables/silverstripe-iframe.git
 
 # The following are the some other modules you might like to import
 
