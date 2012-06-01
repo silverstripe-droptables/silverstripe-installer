@@ -23,6 +23,11 @@ We work on `ssexpress` branch on all modules and the root repo, so we can switch
 
 From here you can submit pull requests from your forks as normal.
 
+## Updating your codebase
+
+* Execute `phing update_modules`
+* Run `git pull --rebase` on the root of the project to update the main project
+
 ## New release
 
 We release the package as a tar.gz archive, while tagging all the related modules.
@@ -38,7 +43,17 @@ To get a tar.gz file for an old release, do:
 * Create the archive `phing archive -Dversion ssexpress-0.1.0 -Darchivedest releases -Darchivename ssexpress-0.1.0 -Darchivetype tar.gz`
 * Checkout the latest version again: `phing checkout -Dtagname ssexpress -DincludeBaseDir yes`
 
-### Prerequisites
+## Adding modules
+
+Modules within SS Express source are handled via phing. To add modules:
+
+* (if the ssexpress branch does not exist) Clone the module manually, and switch to `ssexpress` branch.
+* Add the module to `dependent-modules` - remember to check them out to ssexpress branch
+* Run `phing update_modules`
+* Copy `dependent-modules` into `dependent-modules.default`
+* Commit the result, which should include modifications to aforementioned files and `.gitignore`
+
+## Prerequisites
 
 `Phing`:
 
