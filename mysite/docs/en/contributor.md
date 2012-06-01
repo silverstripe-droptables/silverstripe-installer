@@ -1,6 +1,6 @@
-# SS Express development
+# Contributor Howto
 
-This document is intended for core developers who wish to contribute to the source of SS Express.
+This document is intended for developers who wish to contribute code back to the source of SS Express.
 
 ## Cloning the repository for development
 
