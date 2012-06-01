@@ -4,7 +4,7 @@ This document is intended for core developers who wish to contribute to the sour
 
 ## Cloning the repository for development
 
-Prerequisites: `phing`, `Pear::VersionControl_Git`
+Prerequisites: `phing`, `Pear::VersionControl_Git` (see below)
 
 We work on `ssexpress` branch on all modules and the root repo, so we can switch the versions all across the board easily.
 
@@ -37,3 +37,14 @@ To get a tar.gz file for an old release, do:
 * Checkout the release tag: `phing checkout -Dtagname ssexpress-0.1.0 -DincludeBaseDir yes`
 * Create the archive `phing archive -Dversion ssexpress-0.1.0 -Darchivedest releases -Darchivename ssexpress-0.1.0 -Darchivetype tar.gz`
 * Checkout the latest version again: `phing checkout -Dtagname ssexpress -DincludeBaseDir yes`
+
+### Prerequisites
+
+`Phing`:
+
+* `sudo pear channel-discover pear.phing.info`
+* `sudo pear install --alldeps phing/phing`
+
+`VersionControl Git`:
+
+* `sudo pear install VersionControl_Git-0.4.4`
