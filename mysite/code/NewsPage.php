@@ -5,7 +5,7 @@ class NewsPage extends Page {
 	static $can_be_root = false;
 
 	static $db = array(
-		'Date' => 'Date',
+		'Date' => 'SS_Datetime',
 		'Abstract' => 'Text',
 		'Author' => 'Varchar(255)'
 	);
@@ -21,19 +21,17 @@ class NewsPage extends Page {
 		parent::populateDefaults();
 
 		if(!isset($this->Date) || $this->Date === null) {
-			$this->Date = strftime('%d/%m/%Y');
+			$this->Date = SS_Datetime::now()->Format('Y-m-d H:i:s');
 		}
-		
-		$this->extend('populateDefaults');
 	}
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->addFieldToTab('Root.Main', $dateField = new DateField('Date'), 'Content');
-		$dateField->setConfig('showcalendar', true);
+		$fields->addFieldToTab('Root.Main', $dateTimeField = new DatetimeField('Date'), 'Content');
+		$dateTimeField->getDateField()->setConfig('showcalendar', true);
 
-		$categories = NewsCategory::get()->sort('Title DESC');
+		$categories = NewsCategory::get()->sort('Title ASC');
 		if ($categories && $categories->exists()) {
 			$fields->addFieldToTab('Root.Main', new DropdownField('CategoryID', 'Category', $categories->map()), 'Content');
 		}
