@@ -6,5 +6,12 @@ class NewsHolder extends Page {
 }
 
 class NewsHolder_Controller extends Page_Controller {
+
+	public function NewsItems($pageSize = 10) {
+		$items = $this->Children()->filter('ClassName', 'NewsPage')->sort('Date', 'DESC');
+		$list = new PaginatedList($items, $this->request);
+		$list->setPageLength($pageSize);
+		return $list;
+	}
 	
 }
