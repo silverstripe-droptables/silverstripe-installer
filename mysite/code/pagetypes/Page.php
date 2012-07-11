@@ -7,6 +7,10 @@ class Page extends SiteTree {
 	public static $has_one = array(
 	);
 
+	public function MenuChildren() {
+		return $this->Children()->filter('ShowInMenus', true);
+	}
+
 }
 class Page_Controller extends ContentController {
 

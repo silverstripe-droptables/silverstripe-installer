@@ -3,6 +3,10 @@
 class NewsHolder extends Page {
 	static $allowed_children = array('NewsPage');
 	static $default_child = 'NewsPage';
+
+	public function MenuChildren() {
+		return parent::MenuChildren()->exclude('ClassName', 'NewsPage');
+	}
 }
 
 class NewsHolder_Controller extends Page_Controller {
