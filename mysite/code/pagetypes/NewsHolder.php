@@ -9,6 +9,10 @@ class NewsHolder extends Page {
 	public function MenuChildren() {
 		return parent::MenuChildren()->exclude('ClassName', 'NewsPage');
 	}
+
+	public function getCategories() {
+		return NewsCategory::get()->sort('Title', 'DESC');
+	}
 }
 
 class NewsHolder_Controller extends Page_Controller {
@@ -28,9 +32,4 @@ class NewsHolder_Controller extends Page_Controller {
 			return NewsCategory::get_by_id('NewsCategory', $categoryID);
 		}
 	}
-
-	public function getCategories() {
-		return NewsCategory::get()->sort('Title', 'DESC');
-	}
-	
 }
