@@ -5,11 +5,15 @@ class Page extends SiteTree {
 	);
 
 	public static $has_one = array(
+
 	);
 
 	public function MenuChildren() {
 		return $this->Children()->filter('ShowInMenus', true);
 	}
+
+	static $icon = "themes/ssexpress/images/icons/sitetree_images/page.png";
+
 
 }
 class Page_Controller extends ContentController {
@@ -42,16 +46,14 @@ class Page_Controller extends ContentController {
 			)
 		);
 
-
-
 		// Note: you should use SS template require tags inside your templates 
 		// instead of putting Requirements calls here.  However these are 
 		// included so that our older themes still work
-		Requirements::themedCSS('reset');
 		Requirements::themedCSS('layout'); 
 		Requirements::themedCSS('typography'); 
 		Requirements::themedCSS('forms'); 
-		Requirements::themedCSS('mixins'); 
 	}
+
+
 
 }
