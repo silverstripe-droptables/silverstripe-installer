@@ -42,7 +42,8 @@ class Page_Controller extends ContentController {
 		Requirements::combine_files(
 			'ssexpress.js',
 			array(
-				'themes/ssexpress/js/general.js'
+				'themes/ssexpress/js/general.js',
+				'themes/ssexpress/js/express.js'
 			)
 		);
 

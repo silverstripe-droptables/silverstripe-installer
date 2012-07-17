@@ -13,7 +13,7 @@ class HomePage_Controller extends Page_Controller {
 		$newsHolder = NewsHolder::get_one('NewsHolder');
 		if ($newsHolder) {
 			$controller = new NewsHolder_Controller($newsHolder);
-			return $controller->getNewsItems(5);
+			return $controller->getNewsItems(2);
 		}
 	}
 
