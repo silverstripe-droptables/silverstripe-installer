@@ -78,6 +78,32 @@ class Page_Controller extends ContentController {
 			'Query' => $query,
 			'Title' => _t('SearchForm.SearchResults', 'Search Results')
 		);
-		return $this->owner->customise($data)->renderWith(array('Page_results', 'Page'));
+
+		// Choose the delivery method - rss or html.
+		if(!$this->request->getVar('rss')) {
+			// Add RSS feed to normal search.
+			RSSFeed::linkToFeed(HTTP::setGetVar('rss', '1'), "Search results for query \"$query\".");
+
+			return $this->owner->customise($data)->renderWith(array('Page_results', 'Page'));
+		}
+		else {
+			// De-paginate and reorder. Sort-by-relevancy doesn't make sense in RSS context.
+			$fullList = $results->getList()->sort('LastEdited', 'DESC');
+
+			// Get some descriptive strings
+			$siteName = SiteConfig::current_site_config()->Title;
+			$siteTagline = SiteConfig::current_site_config()->Tagline;
+			if ($siteName) {
+				$title = "$siteName search results for query \"$query\".";
+			}
+			else {
+				$title = "Search results for query \"$query\".";
+			}
+
+			// Generate the feed content.
+			$rss = new RSSFeed($fullList, $this->request->getURL(), $title, $siteTagline, "Title", "ContextualContent", null);
+			$rss->setTemplate('Page_results_rss');
+			$rss->outputToBrowser();
+		}
 	}
 }
