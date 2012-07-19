@@ -66,7 +66,7 @@ class Page_Controller extends ContentController {
 		// Add context summaries based on the queries.
 		foreach ($results as $result) {
 			$contextualTitle = new Text();
-			$contextualTitle->setValue($result->MenuTitle);
+			$contextualTitle->setValue($result->MenuTitle ? $result->MenuTitle : $result->Title);
 			$result->ContextualTitle = $contextualTitle->ContextSummary(300, $query);
 
 			$result->ContextualContent = $result->obj('Content')->ContextSummary(300, $query);
