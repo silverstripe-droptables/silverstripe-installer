@@ -69,7 +69,13 @@ class Page_Controller extends ContentController {
 			$contextualTitle->setValue($result->MenuTitle ? $result->MenuTitle : $result->Title);
 			$result->ContextualTitle = $contextualTitle->ContextSummary(300, $query);
 
-			$result->ContextualContent = $result->obj('Content')->ContextSummary(300, $query);
+			if (!$result->Content && $result->ClassName=='File') {
+				// Fake some content for the files.
+				$result->ContextualContent = "A file named \"$result->Name\" ($result->Size).";
+			}
+			else {
+				$result->ContextualContent = $result->obj('Content')->ContextSummary(300, $query);
+			}
 		}
 
 		$rssLink = HTTP::setGetVar('rss', '1');
