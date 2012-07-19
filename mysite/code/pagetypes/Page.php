@@ -72,17 +72,20 @@ class Page_Controller extends ContentController {
 			$result->ContextualContent = $result->obj('Content')->ContextSummary(300, $query);
 		}
 
+		$rssLink = HTTP::setGetVar('rss', '1');
+
 		// Render the result.
 		$data = array(
 			'Results' => $results,
 			'Query' => $query,
-			'Title' => _t('SearchForm.SearchResults', 'Search Results')
+			'Title' => _t('SearchForm.SearchResults', 'Search Results'),
+			'RSSLink' => $rssLink
 		);
 
 		// Choose the delivery method - rss or html.
 		if(!$this->request->getVar('rss')) {
 			// Add RSS feed to normal search.
-			RSSFeed::linkToFeed(HTTP::setGetVar('rss', '1'), "Search results for query \"$query\".");
+			RSSFeed::linkToFeed($rssLink, "Search results for query \"$query\".");
 
 			return $this->owner->customise($data)->renderWith(array('Page_results', 'Page'));
 		}
