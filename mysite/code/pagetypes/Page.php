@@ -25,10 +25,10 @@ class Page_Controller extends ContentController {
 
 		$themeDir = SSViewer::get_theme_folder();
 		Requirements::clear();
+		Requirements::javascript("$themeDir/js/lib/modernizr.js");
 		Requirements::combine_files(
 			'ssexpress.js',
 			array(
-				"$themeDir/js/lib/modernizr.js",
 				"$themeDir/js/lib/jquery.js",
 				'themes/module_bootstrap/js/bootstrap-transition.js',
 //				'themes/module_bootstrap/js/bootstrap-alert.js',
