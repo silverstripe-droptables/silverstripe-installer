@@ -4,7 +4,7 @@ global $project;
 $project = 'mysite';
 
 global $database;
-$database = 'SS_ssexpress';
+$database = 'SS_ssexpress2';
 
 require_once('conf/ConfigureFromEnv.php');
 
