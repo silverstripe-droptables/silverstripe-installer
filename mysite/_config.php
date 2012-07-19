@@ -34,3 +34,10 @@ GD::set_default_quality(90);
 FulltextSearchable::enable();
 
 Object::add_extension('SiteConfig', 'CustomSiteConfig');
+
+// Configure document converter.
+DocumentImportIFrameField_Importer::set_docvert_username('msi');
+DocumentImportIFrameField_Importer::set_docvert_password('msiconvertsdocument');
+DocumentImportIFrameField_Importer::set_docvert_url('http://docvert.silverstripe.com:8888/');
+
+Object::add_extension('Page', 'DocumentConverterDecorator');

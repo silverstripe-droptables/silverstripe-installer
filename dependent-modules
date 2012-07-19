@@ -30,12 +30,5 @@ themes/module_bootstrap:ssexpress git@github.com:silverstripe-droptables/sass-tw
 testdata:ssexpress git@github.com:silverstripe-droptables/silverstripe-testdata.git
 iframe:ssexpress git@github.com:silverstripe-droptables/silverstripe-iframe.git
 userforms:ssexpress git@github.com:silverstripe-droptables/silverstripe-userforms.git
-
-# The following are the some other modules you might like to import
-
-# sqlite3:master:1.1.0 git://github.com/smindel/silverstripe-sqlite3.git
-# userforms:master:0.3.0 git://github.com/silverstripe/silverstripe-userforms.git
-# securefiles http://svn.polemic.net.nz/silverstripe/modules/SecureFiles/tags/0.30/
-
-
-
+# You might not have access to this module - just comment it out in that case.
+documentconverter:ssexpress git@gitorious.silverstripe.com:+droptables/super-marvellous-core/droptables-documentconverter.git
