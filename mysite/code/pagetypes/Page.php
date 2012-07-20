@@ -33,7 +33,7 @@ class Page_Controller extends ContentController {
 				'themes/module_bootstrap/js/bootstrap-transition.js',
 //				'themes/module_bootstrap/js/bootstrap-alert.js',
 //				'themes/module_bootstrap/js/bootstrap-modal.js',
-//				'themes/module_bootstrap/js/bootstrap-scrollspy.js',
+				'themes/module_bootstrap/js/bootstrap-scrollspy.js',
 //				'themes/module_bootstrap/js/bootstrap-tab.js',
 //				'themes/module_bootstrap/js/bootstrap-tooltip.js',
 //				'themes/module_bootstrap/js/bootstrap-popover.js',
