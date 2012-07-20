@@ -32,3 +32,4 @@ iframe:ssexpress git@github.com:silverstripe-droptables/silverstripe-iframe.git
 userforms:ssexpress git@github.com:silverstripe-droptables/silverstripe-userforms.git
 # You might not have access to this module - just comment it out in that case.
 documentconverter:ssexpress git@gitorious.silverstripe.com:+droptables/super-marvellous-core/droptables-documentconverter.git
+sitetreeimporter:ssexpress git@github.com:silverstripe-droptables/silverstripe-sitetreeimporter.git
