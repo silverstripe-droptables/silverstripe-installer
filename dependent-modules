@@ -33,3 +33,4 @@ userforms:ssexpress git@github.com:silverstripe-droptables/silverstripe-userform
 # You might not have access to this module - just comment it out in that case.
 documentconverter:ssexpress git@gitorious.silverstripe.com:+droptables/super-marvellous-core/droptables-documentconverter.git
 sitetreeimporter:ssexpress git@github.com:silverstripe-droptables/silverstripe-sitetreeimporter.git
+versionedfiles:ssexpress git@github.com:silverstripe-droptables/silverstripe-versionedfiles.git
