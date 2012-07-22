@@ -50,10 +50,11 @@ class Page_Controller extends ContentController {
 			'ssexpress.css',
 			array(
 				"$themeDir/css/layout.css",
-				"$themeDir/css/typography.css",
-				"$themeDir/css/forms.css"
+				"$themeDir/css/typography.css"
 			)
 		);
+
+		Requirements::set_combined_files_folder("$themeDir/_compiled");
 	}
 
 	/**
