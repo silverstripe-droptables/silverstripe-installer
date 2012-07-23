@@ -18,7 +18,6 @@ class ExpressPage_Controller extends ContentController {
 
 		$themeDir = SSViewer::get_theme_folder();
 		Requirements::clear();
-		Requirements::javascript("$themeDir/js/lib/modernizr.js");
 		Requirements::combine_files(
 			'ssexpress.js',
 			array(
