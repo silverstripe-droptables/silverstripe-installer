@@ -1,20 +1,16 @@
 <?php
-class HomePage extends Page {
+/**
+ * This base class is provided here so you can add modifications on top
+ * of the SilverStripe Express code. It is not recommended to modify the 
+ * code in ssexpress directory directly so it's easy to upgrade in the
+ * future.
+ */
 
-	static $icon = "themes/ssexpress/images/icons/sitetree_images/home.png";
-	public $pageIcon =  "images/icons/sitetree_images/home.png";
+class HomePage extends ExpressHomePage {
+	static $hide_ancestor = 'ExpressHomePage';
+}
+
+class HomePage_Controller extends ExpressHomePage_Controller {
 
 }
-class HomePage_Controller extends Page_Controller {
 
-
-	public function getNewsItems() {
-		
-		$newsHolder = NewsHolder::get_one('NewsHolder');
-		if ($newsHolder) {
-			$controller = new NewsHolder_Controller($newsHolder);
-			return $controller->getNewsItems(2);
-		}
-	}
-
-}
