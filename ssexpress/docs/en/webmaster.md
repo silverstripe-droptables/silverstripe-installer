@@ -11,7 +11,11 @@ To install SS Express on your server:
 * Amend `mysite/_config.php` to configure the database name
 * The site is ready to go
 
-## General guidelines to working with SS Express
+## Working with the templates
+
+We recommend creating a new template for each site you build. The `ssexpress` template supplied with the tarball is a good baseline to start from - you can just copy it to a new folder so you won't overwrite it on upgrade.
+
+## Working with the code
 
 SilverStripe Express comes with a set of page types and preconfigured modules. 
 
