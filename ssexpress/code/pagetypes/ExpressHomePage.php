@@ -7,12 +7,14 @@ class ExpressHomePage extends Page {
 }
 class ExpressHomePage_Controller extends Page_Controller {
 
-	public function getNewsItems() {
-		
+	/**
+	 * @param int $amount The amount of items to provide.
+	 */
+	public function getNewsItems($amount = 2) {
 		$newsHolder = NewsHolder::get_one('NewsHolder');
 		if ($newsHolder) {
 			$controller = new NewsHolder_Controller($newsHolder);
-			return $controller->getNewsItems(2);
+			return $controller->getNewsItems($amount);
 		}
 	}
 
