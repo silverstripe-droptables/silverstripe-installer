@@ -122,6 +122,7 @@ class ExpressPage_Controller extends ContentController {
 			'ssexpress.js',
 			array(
 				"$themeDir/js/lib/jquery.js",
+				"$themeDir/js/lib/jquery-ui-1.8.21.custom.js",
 				'themes/module_bootstrap/js/bootstrap-transition.js',
 //				'themes/module_bootstrap/js/bootstrap-alert.js',
 //				'themes/module_bootstrap/js/bootstrap-modal.js',
