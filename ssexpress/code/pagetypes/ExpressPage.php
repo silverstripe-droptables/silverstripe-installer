@@ -13,7 +13,11 @@ class ExpressPage extends SiteTree {
 
 	public function MenuChildren() {
 		return $this->Children()->filter('ShowInMenus', true);
-	}
+	}	
+
+	static $db = array(
+		'AccessKey' => 'Varchar(1)'
+	);
 
 	/**
 	 * Compile a list of changes to the current page, excluding non-published and explicitly secured versions.
@@ -85,6 +89,29 @@ class ExpressPage extends SiteTree {
 		return $fields;
 	}
 
+	public function getSettingsFields() {
+        $fields = parent::getSettingsFields();
+        
+
+        $accessKey = new CompositeField(
+	        $label = new LabelField (
+	    			$name = "extraLabel",
+	    			$content = '<em><strong>Note:</strong> Access Keys must be unique and no longer than a character in length. Please check your current access keys</em>'
+	 		),
+	 		new CompositeField(
+	        	new TextField('AccessKey', $title='Access Key', $value='', $maxLength=1)
+	        )
+        );
+
+   
+
+        $fields->addFieldToTab('Root.Settings', $accessKey);
+
+
+        return $fields;
+    }
+
+
 }
 
 class ExpressPage_Controller extends ContentController {
@@ -126,6 +153,7 @@ class ExpressPage_Controller extends ContentController {
 
 		Requirements::set_combined_files_folder("$themeDir/_compiled");
 	}
+
 
 	/**
 	 * Get all changes from the site in a RSS feed.
