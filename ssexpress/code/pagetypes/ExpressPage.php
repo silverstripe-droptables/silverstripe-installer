@@ -90,8 +90,7 @@ class ExpressPage extends SiteTree {
 	}
 
 	public function getSettingsFields() {
-        $fields = parent::getSettingsFields();
-        
+        $fields = parent::getSettingsFields();        
 
         $accessKey = new CompositeField(
 	        $label = new LabelField (
@@ -101,16 +100,12 @@ class ExpressPage extends SiteTree {
 	 		new CompositeField(
 	        	new TextField('AccessKey', $title='Access Key', $value='', $maxLength=1)
 	        )
-        );
-
-   
+        );   
 
         $fields->addFieldToTab('Root.Settings', $accessKey);
 
-
         return $fields;
     }
-
 
 }
 
