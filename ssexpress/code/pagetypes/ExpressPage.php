@@ -7,6 +7,67 @@ class ExpressPage extends SiteTree {
 
 	static $icon = "themes/ssexpress/images/icons/sitetree_images/page.png";
 
+
+	/**
+	 * Compile a list of changes to the current page, excluding non-published and explicitly secured versions.
+	 *
+	 * @param int $ID Identifier of the record, leave null for this record.
+	 * @param int $highestVersion Top version number to consider.
+	 * @param int $limit Amount of changes to return.
+	 *
+	 * @returns ArrayList List of cleaned records.
+	 */
+	function getDiffedChanges($ID = null, $highestVersion = null, $limit = null) {
+		if (!$ID) $record = $this;
+		else $record = SiteTree::get()->filter(array('ID'=>(int)$ID))->First();
+
+		if (!$record) return null;
+
+		// This can leak secured content if it was protected via inherited setting.
+		// For now the users will need to be aware about this shortcoming.
+		$offset = $highestVersion ? "AND \"SiteTree_versions\".\"Version\"<='".(int)$highestVersion."'" : "";
+		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" DESC");
+
+		// Process the list to add the comparisons.
+		$changeList = new ArrayList();
+		$previous = null;
+		$count = 0;
+		foreach ($versions as $version) {
+			$changed = false;
+
+			if (isset($previous)) {
+				// We have something to compare with.
+				$diff = $record->compareVersions($version->Version, $previous->Version);
+
+				// Produce the diff fields for use in the template.
+				if ($previous->Title!=$version->Title) {
+					$version->DiffTitle = new HTMLText();
+					$version->DiffTitle->setValue('<div><em>Title has changed:</em> '.$diff->Title.'</div>');
+					$changed = true;
+				}
+				if ($previous->Content!=$version->Content) {
+					$version->DiffContent = new HTMLText();
+					$version->DiffContent->setValue('<div>'.$diff->obj('Content')->forTemplate().'</div>');
+					$changed = true;
+				}
+
+				// Omit the versions that haven't been visibly changed (only takes the above fields into consideration).
+				if ($changed) {
+					$changeList->push($version);
+					$count++;
+
+					// Only collect a limited number of entries.
+					if ($limit && $count>=$limit) break;
+				}
+			}
+
+			// Store the last version for comparison.
+			$previous = $version;
+		}		
+
+		return $changeList;
+	}
+
 }
 
 class ExpressPage_Controller extends ContentController {
@@ -47,6 +108,37 @@ class ExpressPage_Controller extends ContentController {
 		);
 
 		Requirements::set_combined_files_folder("$themeDir/_compiled");
+	}
+
+	/**
+	 * Get all changes from the site in a RSS feed.
+	 */
+	function allchanges() {
+		// Fetch the latest changes on the entire site.
+		$latestChanges = DB::query("SELECT * FROM \"SiteTree_versions\" WHERE \"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') AND \"ShowInSearch\"=1 ORDER BY \"LastEdited\" DESC LIMIT 20");
+
+		$changeList = new ArrayList();
+		foreach ($latestChanges as $record) {
+			// Get the diff to the previous version.
+			$version = new Versioned_Version($record);
+			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, 1);
+			if ($changes->Count()) $changeList->push($changes->First());
+		}
+
+		// Produce output
+		$rss = new RSSFeed($changeList, $this->request->getURL(), 'Changes feed', '', "Title", "", null);
+		$rss->setTemplate('Page_allchanges_rss');
+		$rss->outputToBrowser();
+	}
+
+	/**
+	 * Get page-specific changes in a RSS feed.
+	 */
+	function changes() {
+		// Generate the output.
+		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), 'Changes feed', '', "Title", "", null);
+		$rss->setTemplate('Page_changes_rss');
+		$rss->outputToBrowser();
 	}
 
 	/**
