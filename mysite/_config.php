@@ -41,3 +41,14 @@ DocumentImportIFrameField_Importer::set_docvert_password('msiconvertsdocument');
 DocumentImportIFrameField_Importer::set_docvert_url('http://docvert.silverstripe.com:8888/');
 
 Object::add_extension('Page', 'DocumentConverterDecorator');
+
+//default translation
+Translatable::set_default_locale('en_GB');
+Translatable::set_allowed_locales(array(
+	'en_GB', // UK English
+	'mi_NZ', // Maori
+	'zh_yue', // Chinese
+));
+
+Object::add_extension('SiteTree', 'Translatable');
+Object::add_extension('SiteConfig', 'Translatable');
