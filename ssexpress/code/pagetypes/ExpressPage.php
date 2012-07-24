@@ -95,7 +95,7 @@ class ExpressPage extends SiteTree {
         $accessKey = new CompositeField(
 	        $label = new LabelField (
 	    		$name = "extraLabel",
-	    		$content = '<em><strong>Note:</strong> Access Keys must be unique and no longer than a character in length. Please check your current access keys</em>'
+	    		$content = '<p><em><strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict</em></p>'
 	 		),
 	 		new CompositeField(
 	        	new TextField('AccessKey', $title='Access Key', $value='', $maxLength=1)
