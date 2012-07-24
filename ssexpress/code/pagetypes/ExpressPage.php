@@ -106,7 +106,6 @@ class ExpressPage extends SiteTree {
 
         return $fields;
     }
-
 }
 
 class ExpressPage_Controller extends ContentController {
