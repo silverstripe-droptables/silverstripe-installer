@@ -4,7 +4,8 @@ class ExpressPage extends SiteTree {
 	static $icon = 'themes/ssexpress/images/icons/sitetree_images/page.png';
 
 	static $db = array(
-		'PublicHistory' => 'Boolean'
+		'PublicHistory' => 'Boolean',
+		'AccessKey' => 'Varchar(1)'
 	);
 
 	static $defaults = array(
@@ -13,11 +14,7 @@ class ExpressPage extends SiteTree {
 
 	public function MenuChildren() {
 		return $this->Children()->filter('ShowInMenus', true);
-	}	
-
-	static $db = array(
-		'AccessKey' => 'Varchar(1)'
-	);
+	}
 
 	/**
 	 * Compile a list of changes to the current page, excluding non-published and explicitly secured versions.
@@ -77,35 +74,28 @@ class ExpressPage extends SiteTree {
 		return $changeList;
 	}
 
-	function getSettingsFields() {
+	public function getSettingsFields() {
 		$fields = parent::getSettingsFields();
 
+		// Add public history field.
 		$fields->addFieldToTab('Root.Settings', $publicHistory = new FieldGroup(
 			new CheckboxField('PublicHistory', $this->fieldLabel('Make all page history viewable (This will make the entire page history visible, even if it used to be secured)'))
 		));
-
 		$publicHistory->setTitle($this->fieldLabel('Public history'));
+
+		// Access key field.
+		$fields->addFieldToTab('Root.Settings', new CompositeField(
+			$label = new LabelField (
+				$name = "extraLabel",
+				$content = '<p><em><strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict</em></p>'
+			),
+			new CompositeField(
+				new TextField('AccessKey', $title = 'Access Key', $value = '', $maxLength = 1)
+			)
+		));
 
 		return $fields;
 	}
-
-	public function getSettingsFields() {
-        $fields = parent::getSettingsFields();        
-
-        $accessKey = new CompositeField(
-	        $label = new LabelField (
-	    		$name = "extraLabel",
-	    		$content = '<p><em><strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict</em></p>'
-	 		),
-	 		new CompositeField(
-	        	new TextField('AccessKey', $title = 'Access Key', $value = '', $maxLength = 1)
-	        )
-        );   
-
-        $fields->addFieldToTab('Root.Settings', $accessKey);
-
-        return $fields;
-    }
 }
 
 class ExpressPage_Controller extends ContentController {
@@ -166,7 +156,7 @@ class ExpressPage_Controller extends ContentController {
 		}
 
 		// Produce output
-		$rss = new RSSFeed($changeList, $this->request->getURL(), 'Changes feed', '', "Title", "", null);
+		$rss = new RSSFeed($changeList, $this->request->getURL(), SiteConfig::current_site_config()->Title . ' changes', '', "Title", "", null);
 		$rss->setTemplate('Page_allchanges_rss');
 		$rss->outputToBrowser();
 	}
@@ -178,7 +168,7 @@ class ExpressPage_Controller extends ContentController {
 		if(!$this->PublicHistory) throw new SS_HTTPResponse_Exception('Page history not viewable', 404);
 
 		// Generate the output.
-		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), 'Changes feed', '', "Title", "", null);
+		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), $this->Title . ' changes', '', "Title", "", null);
 		$rss->setTemplate('Page_changes_rss');
 		$rss->outputToBrowser();
 	}
