@@ -1,23 +1,30 @@
 <?php
 class ExpressPage extends SiteTree {
 
+	static $icon = 'themes/ssexpress/images/icons/sitetree_images/page.png';
+
+	static $db = array(
+		'PublicHistory' => 'Boolean'
+	);
+
+	static $defaults = array(
+		'PublicHistory' => true
+	);
+
 	public function MenuChildren() {
 		return $this->Children()->filter('ShowInMenus', true);
 	}
-
-	static $icon = "themes/ssexpress/images/icons/sitetree_images/page.png";
-
 
 	/**
 	 * Compile a list of changes to the current page, excluding non-published and explicitly secured versions.
 	 *
 	 * @param int $ID Identifier of the record, leave null for this record.
 	 * @param int $highestVersion Top version number to consider.
-	 * @param int $limit Amount of changes to return.
+	 * @param boolean $fullHistory Whether to get the full change history or just the previous version.
 	 *
 	 * @returns ArrayList List of cleaned records.
 	 */
-	function getDiffedChanges($ID = null, $highestVersion = null, $limit = null) {
+	function getDiffedChanges($ID = null, $highestVersion = null, $fullHistory = true) {
 		if (!$ID) $record = $this;
 		else $record = SiteTree::get()->filter(array('ID'=>(int)$ID))->First();
 
@@ -25,8 +32,9 @@ class ExpressPage extends SiteTree {
 
 		// This can leak secured content if it was protected via inherited setting.
 		// For now the users will need to be aware about this shortcoming.
-		$offset = $highestVersion ? "AND \"SiteTree_versions\".\"Version\"<='".(int)$highestVersion."'" : "";
-		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" DESC");
+		$offset = $highestVersion ? "AND \"SiteTree_versions\".\"Version\"<='".(int)$highestVersion."'" : '';
+		$limit = $fullHistory ? null : 2;
+		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" DESC", $limit);
 
 		// Process the list to add the comparisons.
 		$changeList = new ArrayList();
@@ -55,9 +63,6 @@ class ExpressPage extends SiteTree {
 				if ($changed) {
 					$changeList->push($version);
 					$count++;
-
-					// Only collect a limited number of entries.
-					if ($limit && $count>=$limit) break;
 				}
 			}
 
@@ -66,6 +71,18 @@ class ExpressPage extends SiteTree {
 		}		
 
 		return $changeList;
+	}
+
+	function getSettingsFields() {
+		$fields = parent::getSettingsFields();
+
+		$fields->addFieldToTab('Root.Settings', $publicHistory = new FieldGroup(
+			new CheckboxField('PublicHistory', $this->fieldLabel('Make all page history viewable (This will make the entire page history visible, even if it used to be secured)'))
+		));
+
+		$publicHistory->setTitle($this->fieldLabel('Public history'));
+
+		return $fields;
 	}
 
 }
@@ -115,13 +132,13 @@ class ExpressPage_Controller extends ContentController {
 	 */
 	function allchanges() {
 		// Fetch the latest changes on the entire site.
-		$latestChanges = DB::query("SELECT * FROM \"SiteTree_versions\" WHERE \"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') AND \"ShowInSearch\"=1 ORDER BY \"LastEdited\" DESC LIMIT 20");
+		$latestChanges = DB::query("SELECT v.* FROM \"SiteTree_versions\" v LEFT JOIN \"ExpressPage\" e ON v.\"RecordID\" = e.\"ID\" WHERE v.\"WasPublished\"='1' AND v.\"CanViewType\" IN ('Anyone', 'Inherit') AND v.\"ShowInSearch\"=1 AND (e.\"PublicHistory\" IS NULL OR e.\"PublicHistory\" = '1') ORDER BY v.\"LastEdited\" DESC LIMIT 20");
 
 		$changeList = new ArrayList();
 		foreach ($latestChanges as $record) {
 			// Get the diff to the previous version.
 			$version = new Versioned_Version($record);
-			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, 1);
+			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, false);
 			if ($changes->Count()) $changeList->push($changes->First());
 		}
 
@@ -135,6 +152,8 @@ class ExpressPage_Controller extends ContentController {
 	 * Get page-specific changes in a RSS feed.
 	 */
 	function changes() {
+		if(!$this->PublicHistory) throw new SS_HTTPResponse_Exception('Page history not viewable', 404);
+
 		// Generate the output.
 		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), 'Changes feed', '', "Title", "", null);
 		$rss->setTemplate('Page_changes_rss');
