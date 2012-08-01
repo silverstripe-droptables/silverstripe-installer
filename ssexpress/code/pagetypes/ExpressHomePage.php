@@ -56,8 +56,8 @@ class ExpressHomePage extends Page {
 
 		return $fields;
 	}
-
 }
+
 class ExpressHomePage_Controller extends Page_Controller {
 
 	/**
@@ -69,6 +69,27 @@ class ExpressHomePage_Controller extends Page_Controller {
 			$controller = new NewsHolder_Controller($newsHolder);
 			return $controller->getNewsItems($amount);
 		}
+	}
+
+	/**
+	 * Get all changes from the site in a RSS feed.
+	 */
+	function allchanges() {
+		// Fetch the latest changes on the entire site.
+		$latestChanges = DB::query("SELECT v.* FROM \"SiteTree_versions\" v LEFT JOIN \"ExpressPage\" e ON v.\"RecordID\" = e.\"ID\" WHERE v.\"WasPublished\"='1' AND v.\"CanViewType\" IN ('Anyone', 'Inherit') AND v.\"ShowInSearch\"=1 AND (e.\"PublicHistory\" IS NULL OR e.\"PublicHistory\" = '1') ORDER BY v.\"LastEdited\" DESC LIMIT 20");
+
+		$changeList = new ArrayList();
+		foreach ($latestChanges as $record) {
+			// Get the diff to the previous version.
+			$version = new Versioned_Version($record);
+			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, false);
+			if ($changes->Count()) $changeList->push($changes->First());
+		}
+
+		// Produce output
+		$rss = new RSSFeed($changeList, $this->request->getURL(), SiteConfig::current_site_config()->Title . ' changes', '', "Title", "", null);
+		$rss->setTemplate('Page_allchanges_rss');
+		$rss->outputToBrowser();
 	}
 
 }

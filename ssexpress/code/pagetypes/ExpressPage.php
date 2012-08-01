@@ -105,6 +105,7 @@ class ExpressPage_Controller extends ContentController {
 	public function init() {
 		parent::init();
 
+		// Requirements
 		$themeDir = SSViewer::get_theme_folder();
 		Requirements::clear();
 		Requirements::combine_files(
@@ -137,28 +138,11 @@ class ExpressPage_Controller extends ContentController {
 		);
 
 		Requirements::set_combined_files_folder("$themeDir/_compiled");
-	}
 
-
-	/**
-	 * Get all changes from the site in a RSS feed.
-	 */
-	function allchanges() {
-		// Fetch the latest changes on the entire site.
-		$latestChanges = DB::query("SELECT v.* FROM \"SiteTree_versions\" v LEFT JOIN \"ExpressPage\" e ON v.\"RecordID\" = e.\"ID\" WHERE v.\"WasPublished\"='1' AND v.\"CanViewType\" IN ('Anyone', 'Inherit') AND v.\"ShowInSearch\"=1 AND (e.\"PublicHistory\" IS NULL OR e.\"PublicHistory\" = '1') ORDER BY v.\"LastEdited\" DESC LIMIT 20");
-
-		$changeList = new ArrayList();
-		foreach ($latestChanges as $record) {
-			// Get the diff to the previous version.
-			$version = new Versioned_Version($record);
-			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, false);
-			if ($changes->Count()) $changeList->push($changes->First());
+		// RSS feed
+		if ($this->PublicHistory) {
+			RSSFeed::linkToFeed($this->Link() . 'changes');
 		}
-
-		// Produce output
-		$rss = new RSSFeed($changeList, $this->request->getURL(), SiteConfig::current_site_config()->Title . ' changes', '', "Title", "", null);
-		$rss->setTemplate('Page_allchanges_rss');
-		$rss->outputToBrowser();
 	}
 
 	/**
@@ -231,5 +215,14 @@ class ExpressPage_Controller extends ContentController {
 			$rss->setTemplate('Page_results_rss');
 			$rss->outputToBrowser();
 		}
+	}
+
+	public function getSiteRSSLink() {
+		$homepage = ExpressHomePage::get_one('ExpressHomePage');
+		if ($homepage) {
+			return $homepage->Link('allchanges');
+		}
+
+		return RootURLController::get_homepage_link() . '/allchanges';
 	}
 }
