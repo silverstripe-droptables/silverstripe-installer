@@ -83,7 +83,7 @@ class ExpressHomePage_Controller extends Page_Controller {
 			// Get the diff to the previous version.
 			$version = new Versioned_Version($record);
 			$changes = $this->getDiffedChanges($version->RecordID, $version->Version, false);
-			if ($changes->Count()) $changeList->push($changes->First());
+			if ($changes && $changes->Count()) $changeList->push($changes->First());
 		}
 
 		// Produce output
