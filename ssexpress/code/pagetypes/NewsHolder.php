@@ -17,6 +17,12 @@ class NewsHolder extends Page {
 
 class NewsHolder_Controller extends Page_Controller {
 
+	public function init() {
+		parent::init();
+
+		RSSFeed::linkToFeed($this->Link() . 'rss', SiteConfig::current_site_config()->Title . ' news');
+	}
+
 	public function getNewsItems($pageSize = 10) {
 		$items = $this->Children()->filter('ClassName', 'NewsPage')->sort('Date', 'DESC');
 		$category = $this->getCategory();
@@ -31,5 +37,10 @@ class NewsHolder_Controller extends Page_Controller {
 		if (!is_null($categoryID)) {
 			return NewsCategory::get_by_id('NewsCategory', $categoryID);
 		}
+	}
+
+	public function rss() {
+		$rss = new RSSFeed($this->Children(), $this->Link, SiteConfig::current_site_config()->Title . ' news');
+		$rss->outputToBrowser();
 	}
 }

@@ -136,13 +136,16 @@ class ExpressPage_Controller extends ContentController {
 				"$themeDir/css/typography.css"
 			)
 		);
+		Requirements::css("$themeDir/css/print.css", 'print');
 
 		Requirements::set_combined_files_folder("$themeDir/_compiled");
 
-		// RSS feed
+		// RSS feed for per-page changes.
 		if ($this->PublicHistory) {
-			RSSFeed::linkToFeed($this->Link() . 'changes');
+			RSSFeed::linkToFeed($this->Link() . 'changes', 'Updates to ' . $this->Title . ' page');
 		}
+		// RSS feed to all-site changes.
+		RSSFeed::linkToFeed($this->getSiteRSSLink(), 'Updates to ' . SiteConfig::current_site_config()->Title);
 	}
 
 	/**
@@ -152,7 +155,7 @@ class ExpressPage_Controller extends ContentController {
 		if(!$this->PublicHistory) throw new SS_HTTPResponse_Exception('Page history not viewable', 404);
 
 		// Generate the output.
-		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), $this->Title . ' changes', '', "Title", "", null);
+		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), 'Updates to ' . $this->Title . ' page', '', "Title", "", null);
 		$rss->setTemplate('Page_changes_rss');
 		$rss->outputToBrowser();
 	}
