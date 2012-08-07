@@ -47,7 +47,7 @@ Translatable::set_default_locale('en_GB');
 Translatable::set_allowed_locales(array(
 	'en_GB', // UK English
 	'mi_NZ', // Maori
-	'zh_yue', // Chinese
+	'zh_cmn', // Chinese (Mandarin)
 ));
 
 Object::add_extension('SiteTree', 'Translatable');
