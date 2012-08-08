@@ -43,12 +43,15 @@ DocumentImportIFrameField_Importer::set_docvert_url('http://docvert.silverstripe
 Object::add_extension('Page', 'DocumentConverterDecorator');
 
 //default translation
-Translatable::set_default_locale('en_GB');
+Translatable::set_default_locale('en_NZ');
 Translatable::set_allowed_locales(array(
-	'en_GB', // UK English
+	'en_NZ', // NZ English
 	'mi_NZ', // Maori
 	'zh_cmn', // Chinese (Mandarin)
 ));
 
 Object::add_extension('SiteTree', 'Translatable');
 Object::add_extension('SiteConfig', 'Translatable');
+
+i18n::$common_locales['mi_NZ'][0] = 'Māori';
+i18n::$common_languages['mi'][0] = 'Māori';
