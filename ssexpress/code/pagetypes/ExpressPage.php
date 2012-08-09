@@ -35,41 +35,46 @@ class ExpressPage extends SiteTree {
 		// For now the users will need to be aware about this shortcoming.
 		$offset = $highestVersion ? "AND \"SiteTree_versions\".\"Version\"<='".(int)$highestVersion."'" : '';
 		$limit = $fullHistory ? null : 2;
-		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" DESC", $limit);
+		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" ASC", $limit);
 
 		// Process the list to add the comparisons.
 		$changeList = new ArrayList();
-		$previous = null;
+		$next = null;
 		$count = 0;
 		foreach ($versions as $version) {
 			$changed = false;
 
-			if (isset($previous)) {
+			if (isset($next)) {
 				// We have something to compare with.
-				$diff = $record->compareVersions($version->Version, $previous->Version);
+				$diff = $record->compareVersions($next->Version, $version->Version);
 
 				// Produce the diff fields for use in the template.
-				if ($previous->Title!=$version->Title) {
+				if ($next->Title!=$version->Title) {
 					$version->DiffTitle = new HTMLText();
 					$version->DiffTitle->setValue('<div><em>Title has changed:</em> '.$diff->Title.'</div>');
 					$changed = true;
 				}
-				if ($previous->Content!=$version->Content) {
+				if ($next->Content!=$version->Content) {
 					$version->DiffContent = new HTMLText();
 					$version->DiffContent->setValue('<div>'.$diff->obj('Content')->forTemplate().'</div>');
 					$changed = true;
 				}
+			} else {
+				$first = clone($version);
+				$first->DiffContent = new HTMLText();
+				$first->DiffContent->setValue('<div>'.$first->obj('Content')->forTemplate().'</div>');
+				$changeList->unshift($first);
+			}
 
-				// Omit the versions that haven't been visibly changed (only takes the above fields into consideration).
-				if ($changed) {
-					$changeList->push($version);
-					$count++;
-				}
+			// Omit the versions that haven't been visibly changed (only takes the above fields into consideration).
+			if ($changed) {
+				$changeList->unshift($version);
+				$count++;
 			}
 
 			// Store the last version for comparison.
-			$previous = $version;
-		}		
+			$next = $version;
+		}
 
 		return $changeList;
 	}
@@ -79,15 +84,20 @@ class ExpressPage extends SiteTree {
 
 		// Add public history field.
 		$fields->addFieldToTab('Root.Settings', $publicHistory = new FieldGroup(
-			new CheckboxField('PublicHistory', $this->fieldLabel('Make all page history viewable (This will make the entire page history visible, even if it used to be secured)'))
-		));
+			new CheckboxField('PublicHistory', $this->fieldLabel(_t(
+				'RSSHistory.LABEL',
+				'Publish public RSS feed containing every published version of this page.'))
+		)));
 		$publicHistory->setTitle($this->fieldLabel('Public history'));
 
 		// Access key field.
 		$fields->addFieldToTab('Root.Settings', new CompositeField(
 			$label = new LabelField (
 				$name = "extraLabel",
-				$content = '<p><em><strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict</em></p>'
+				$content = '<p><em>' . _t(
+					'AccessKeys.LABEL',
+					'<strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict'
+				) . '</em></p>'
 			),
 			new CompositeField(
 				new TextField('AccessKey', $title = 'Access Key', $value = '', $maxLength = 1)

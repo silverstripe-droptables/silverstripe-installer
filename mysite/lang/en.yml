@@ -1,0 +1,5 @@
+en:
+  RSSHistory:
+    LABEL: Publish public RSS feed containing every published version of this page.
+  AccessKeys:
+    LABEL: <strong>Note:</strong> Access Keys are optional, but must be a single unique character. Check your current access keys to avoid conflict
