@@ -13,6 +13,10 @@ class NewsHolder extends Page {
 	public function getCategories() {
 		return NewsCategory::get()->sort('Title', 'DESC');
 	}
+
+	public function getDefaultRSSLink() {
+		return $this->Link('rss');
+	}
 }
 
 class NewsHolder_Controller extends Page_Controller {

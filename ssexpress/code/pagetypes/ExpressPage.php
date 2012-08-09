@@ -96,6 +96,19 @@ class ExpressPage extends SiteTree {
 
 		return $fields;
 	}
+
+	public function getSiteRSSLink() {
+		$homepage = ExpressHomePage::get_one('ExpressHomePage');
+		if ($homepage) {
+			return $homepage->Link('allchanges');
+		}
+
+		return RootURLController::get_homepage_link() . '/allchanges';
+	}
+
+	public function getDefaultRSSLink() {
+		return $this->Link('changes');
+	}
 }
 
 class ExpressPage_Controller extends ContentController {
@@ -218,14 +231,5 @@ class ExpressPage_Controller extends ContentController {
 			$rss->setTemplate('Page_results_rss');
 			$rss->outputToBrowser();
 		}
-	}
-
-	public function getSiteRSSLink() {
-		$homepage = ExpressHomePage::get_one('ExpressHomePage');
-		if ($homepage) {
-			return $homepage->Link('allchanges');
-		}
-
-		return RootURLController::get_homepage_link() . '/allchanges';
 	}
 }
