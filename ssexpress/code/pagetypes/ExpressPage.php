@@ -117,7 +117,7 @@ class ExpressPage extends SiteTree {
 	}
 
 	public function getDefaultRSSLink() {
-		return $this->Link('changes');
+		if ($this->PublicHistory) return $this->Link('changes');
 	}
 }
 
