@@ -35,45 +35,47 @@ class ExpressPage extends SiteTree {
 		// For now the users will need to be aware about this shortcoming.
 		$offset = $highestVersion ? "AND \"SiteTree_versions\".\"Version\"<='".(int)$highestVersion."'" : '';
 		$limit = $fullHistory ? null : 2;
-		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" ASC", $limit);
+		$versions = $record->allVersions("\"WasPublished\"='1' AND \"CanViewType\" IN ('Anyone', 'Inherit') $offset", "\"LastEdited\" DESC", $limit);
 
 		// Process the list to add the comparisons.
 		$changeList = new ArrayList();
-		$next = null;
+		$previous = null;
 		$count = 0;
 		foreach ($versions as $version) {
 			$changed = false;
 
-			if (isset($next)) {
+			if (isset($previous)) {
 				// We have something to compare with.
-				$diff = $record->compareVersions($next->Version, $version->Version);
+				$diff = $record->compareVersions($version->Version, $previous->Version);
 
 				// Produce the diff fields for use in the template.
-				if ($next->Title!=$version->Title) {
+				if ($version->Title != $previous->Title) {
 					$version->DiffTitle = new HTMLText();
 					$version->DiffTitle->setValue('<div><em>Title has changed:</em> '.$diff->Title.'</div>');
 					$changed = true;
 				}
-				if ($next->Content!=$version->Content) {
+				if ($version->Content != $previous->Content) {
 					$version->DiffContent = new HTMLText();
 					$version->DiffContent->setValue('<div>'.$diff->obj('Content')->forTemplate().'</div>');
 					$changed = true;
 				}
-			} else {
-				$first = clone($version);
-				$first->DiffContent = new HTMLText();
-				$first->DiffContent->setValue('<div>'.$first->obj('Content')->forTemplate().'</div>');
-				$changeList->unshift($first);
 			}
 
 			// Omit the versions that haven't been visibly changed (only takes the above fields into consideration).
 			if ($changed) {
-				$changeList->unshift($version);
+				$changeList->push($version);
 				$count++;
 			}
 
 			// Store the last version for comparison.
-			$next = $version;
+			$previous = $version;
+		}
+
+		if ($fullHistory && $previous) {
+			$first = clone($previous);
+			$first->DiffContent = new HTMLText();
+			$first->DiffContent->setValue('<div>'.$first->obj('Content')->forTemplate().'</div>');
+			$changeList->push($first);
 		}
 
 		return $changeList;
