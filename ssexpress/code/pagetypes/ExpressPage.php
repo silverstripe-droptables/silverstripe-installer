@@ -164,13 +164,17 @@ class ExpressPage_Controller extends ContentController {
 		Requirements::css("$themeDir/css/print.css", 'print');
 
 		Requirements::set_combined_files_folder("$themeDir/_compiled");
+	}
 
+	function index() {
 		// RSS feed for per-page changes.
 		if ($this->PublicHistory) {
 			RSSFeed::linkToFeed($this->Link() . 'changes', 'Updates to ' . $this->Title . ' page');
 		}
-		// RSS feed to all-site changes.
-		RSSFeed::linkToFeed($this->getSiteRSSLink(), 'Updates to ' . SiteConfig::current_site_config()->Title);
+
+		$this->linkToAllSiteRSSFeed();
+
+		return $this;
 	}
 
 	/**
@@ -189,6 +193,8 @@ class ExpressPage_Controller extends ContentController {
 	 * Overrides the ContentControllerSearchExtension and adds snippets to results.
 	 */
 	function results($data, $form, $request) {
+		$this->linkToAllSiteRSSFeed();
+
 		$results = $form->getResults();
 		$query = $form->getSearchQuery();
 
@@ -247,5 +253,10 @@ class ExpressPage_Controller extends ContentController {
 
 	function getFooter() {
 		return FooterHolder::get_one('FooterHolder');
+	}
+
+	function linkToAllSiteRSSFeed() {
+		// RSS feed to all-site changes.
+		RSSFeed::linkToFeed($this->getSiteRSSLink(), 'Updates to ' . SiteConfig::current_site_config()->Title);
 	}
 }
