@@ -25,6 +25,18 @@ SilverStripe Express specific page types are all located in `ssexpress` director
 
 Use `mysite/_config.php` to fine-tune the site configuration. More information is available in the [configuration reference](http://doc.silverstripe.org/framework/en/topics/configuration).
 
+## Upgrading an existing site
+
+SilverStripe Express can be used to enhance an existing site:
+
+* Add the ssexpress folder to the root of the site like any other module
+* Update the mysite/_config.php with the options from any modules that you'd like to include (at the very least, the replacing of SiteConfig with CustomSiteConfig)
+* Alter all classes that inherit from SiteTree to inherit from ExpressPage instead
+
+This will provide the new page types (NewsPage, NewsHolder, AccessibilityPage, SitemapPage) as well as giving all the pages RSS feeds and the option to have an access key. You may face integration issues with an existing site search, this could remedied by overriding the results() function in the lowest-level Page class.
+
+SilverStripe Express has no dependencies on the other modules that ship with it (documentconverter, iframe, sitetreeimporter, translatable, userforms and versionedfiles) so these maybe omitted if the functionality isn't necessary.
+
 ## Future upgrades
 
 It is not recommended to modify directly any module files. The best way to work with the site is to put modifications in your own theme (`themes/<yourname>`) or in `mysite` only.
