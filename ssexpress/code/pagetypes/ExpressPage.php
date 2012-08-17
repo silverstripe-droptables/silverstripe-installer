@@ -244,4 +244,8 @@ class ExpressPage_Controller extends ContentController {
 			$rss->outputToBrowser();
 		}
 	}
+
+	function getFooter() {
+		return FooterHolder::get_one('FooterHolder');
+	}
 }
