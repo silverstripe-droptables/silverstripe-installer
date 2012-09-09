@@ -89,7 +89,7 @@ class ExpressHomePage_Controller extends Page_Controller {
 		// Produce output
 		$rss = new RSSFeed($changeList, $this->request->getURL(), 'Updates to ' . SiteConfig::current_site_config()->Title, '', "Title", "", null);
 		$rss->setTemplate('Page_allchanges_rss');
-		$rss->outputToBrowser();
+		return $rss->outputToBrowser();
 	}
 
 }

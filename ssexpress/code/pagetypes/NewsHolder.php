@@ -45,6 +45,6 @@ class NewsHolder_Controller extends Page_Controller {
 
 	public function rss() {
 		$rss = new RSSFeed($this->Children(), $this->Link, SiteConfig::current_site_config()->Title . ' news');
-		$rss->outputToBrowser();
+		return $rss->outputToBrowser();
 	}
 }

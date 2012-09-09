@@ -181,12 +181,12 @@ class ExpressPage_Controller extends ContentController {
 	 * Get page-specific changes in a RSS feed.
 	 */
 	function changes() {
-		if(!$this->PublicHistory) throw new SS_HTTPResponse_Exception('Page history not viewable', 404);
+		if(!$this->PublicHistory) throw new SS_HTTPResponse_Exception('Page history not viewable', 404);;
 
 		// Generate the output.
 		$rss = new RSSFeed($this->getDiffedChanges(), $this->request->getURL(), 'Updates to ' . $this->Title . ' page', '', "Title", "", null);
 		$rss->setTemplate('Page_changes_rss');
-		$rss->outputToBrowser();
+		return $rss->outputToBrowser();
 	}
 
 	/**
@@ -247,7 +247,7 @@ class ExpressPage_Controller extends ContentController {
 			// Generate the feed content.
 			$rss = new RSSFeed($fullList, $this->request->getURL(), $title, $siteTagline, "Title", "ContextualContent", null);
 			$rss->setTemplate('Page_results_rss');
-			$rss->outputToBrowser();
+			return $rss->outputToBrowser();
 		}
 	}
 
