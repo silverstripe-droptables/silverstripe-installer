@@ -4,16 +4,20 @@ This howto is intended for staff who will be deploying and maintaining the site,
 
 ## Installation
 
-To install SS Express on your server:
+To install SilverStripe Express on your server:
 
-* Dowload SS Express tarball
+* Download SilverStripe Express tarball
 * Unpack it
 * Amend `mysite/_config.php` to configure the database name
 * The site is ready to go
 
+You can also fetch SilverStripe Express from source. The base repository is on github, the `ssexpress` branch of `github.com/silverstripe-droptables/silverstripe-installer`. The other repositories and their folders are listed in the file `dependent-modules` in the root - these are automatically fetched when using the Phing build tool with the command `phing update_modules`.
+
 ## Working with the templates
 
 We recommend creating a new template for each site you build. The `ssexpress` template supplied with the tarball is a good baseline to start from - you can just copy it to a new folder so you won't overwrite it on upgrade.
+
+If you want to work from source it's recommended that you edit the SCSS instead of the CSS directly, and use Compass to compile the SCSS. This is done by running `compass watch -e production` in the `themes/ssexpress` directory. This will require that you've got the module_bootstrap theme present (you may not if you've installed from source and ommitted it) as the SCSS files in the ssexpress modules depend on it.
 
 ## Working with the code
 
