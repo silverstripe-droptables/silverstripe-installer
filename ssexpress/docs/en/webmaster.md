@@ -17,7 +17,9 @@ You can also fetch SilverStripe Express from source. The base repository is on g
 
 We recommend creating a new template for each site you build. The `ssexpress` template supplied with the tarball is a good baseline to start from - you can just copy it to a new folder so you won't overwrite it on upgrade.
 
-If you want to work from source it's recommended that you edit the SCSS instead of the CSS directly, and use Compass to compile the SCSS. This is done by running `compass watch -e production` in the `themes/ssexpress` directory. This will require that you've got the module_bootstrap theme present (you may not if you've installed from source and ommitted it) as the SCSS files in the ssexpress modules depend on it.
+### From source
+
+If you want to work from source it's recommended that you edit the SCSS instead of the CSS directly, and use the Compass framework to compile the SCSS. Once you've installed Compass from [http://compass-style.org/install/](http://compass-style.org/install/) you can start the automatic compilation process by running `compass watch -e production` in the `themes/ssexpress` directory. This will require that you've got module_bootstrap present in your themes directory (you may not if you've installed from source and omitted it) as the SCSS files in the ssexpress theme depend on it.
 
 ## Working with the code
 
