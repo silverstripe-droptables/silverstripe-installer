@@ -163,7 +163,7 @@ class ExpressPage_Controller extends ContentController {
 		);
 		Requirements::css("$themeDir/css/print.css", 'print');
 
-		Requirements::set_combined_files_folder("$themeDir/_compiled");
+		Requirements::set_combined_files_folder(ASSETS_DIR."/_compiled/p");
 	}
 
 	function index() {
