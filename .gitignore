@@ -11,7 +11,7 @@ cms
 framework
 themes/ssexpress
 themes/module_bootstrap
-testdata
+testdata/*
 releases/*.tar.gz
 iframe
 userforms
