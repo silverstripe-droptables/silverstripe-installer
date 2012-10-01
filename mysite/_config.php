@@ -36,8 +36,8 @@ FulltextSearchable::enable();
 Object::add_extension('SiteConfig', 'CustomSiteConfig');
 
 // Configure document converter.
-DocumentImportIFrameField_Importer::set_docvert_username('msi');
-DocumentImportIFrameField_Importer::set_docvert_password('msiconvertsdocument');
+DocumentImportIFrameField_Importer::set_docvert_username('ss-express');
+DocumentImportIFrameField_Importer::set_docvert_password('hLT7pCaJrYVz');
 DocumentImportIFrameField_Importer::set_docvert_url('http://docvert.silverstripe.com:8888/');
 
 Object::add_extension('Page', 'DocumentConverterDecorator');
