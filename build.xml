@@ -120,6 +120,7 @@ Options:
 				<exclude name="assets" />
 				<exclude name="assets/**" />
 				<exclude name="_artifacts/**" />
+				<exclude name="tags" />
 				<exclude name="releases/**" />
 				<exclude name="**/*.log" />
 				<exclude name="**/.svn/**" />
