@@ -22,7 +22,8 @@ class ExpressHomePage extends Page {
 	);
 
 	static $has_many = array(
-		'CarouselItems' => 'CarouselItem'
+		'CarouselItems' => 'CarouselItem',
+		'Quicklinks' => 'Quicklink'
 	);
 
 	function getCMSFields() {
@@ -30,21 +31,6 @@ class ExpressHomePage extends Page {
 
 		// Main Content tab
 		$fields->addFieldToTab('Root.Main', new TreeDropdownField('LearnMorePageID', 'Page to link the "Learn More" button to:', 'SiteTree'), 'Metadata');
-
-		// Feature One tab
-		$fields->addFieldToTab('Root.FeatureOne', new TextField('FeatureOneTitle', 'Title'));
-		$fields->addFieldToTab('Root.FeatureOne', new DropdownField('FeatureOneCategory', 'Category', $this->dbObject('FeatureTwoCategory')->enumValues()));
-		$fields->addFieldToTab('Root.FeatureOne', new HTMLEditorField('FeatureOneContent', 'Content'));
-		$fields->addFieldToTab('Root.FeatureOne', new TextField('FeatureOneButtonText', 'Button text'));
-		$fields->addFieldToTab('Root.FeatureOne', new TreeDropdownField('FeatureOneLinkID', 'Page to link to', 'SiteTree'));
-
-		// Feature Two tab
-		$fields->addFieldToTab('Root.FeatureTwo', new TextField('FeatureTwoTitle', 'Title'));
-		$fields->addFieldToTab('Root.FeatureTwo', new DropdownField('FeatureTwoCategory', 'Category', $this->dbObject('FeatureTwoCategory')->enumValues()));
-		$fields->addFieldToTab('Root.FeatureTwo', new HTMLEditorField('FeatureTwoContent', 'Content'));
-		$fields->addFieldToTab('Root.FeatureTwo', new TextField('FeatureTwoButtonText', 'Button text'));
-		$fields->addFieldToTab('Root.FeatureTwo', new TreeDropdownField('FeatureTwoLinkID', 'Page to link to', 'SiteTree'));
-
 		// Carousel tab
 		$gridField = new GridField(
 			'CarouselItems',
@@ -53,6 +39,38 @@ class ExpressHomePage extends Page {
 			GridFieldConfig_RelationEditor::create());
 		$gridField->setModelClass('CarouselItem');
 		$fields->addFieldToTab('Root.Carousel', $gridField);
+
+
+		$gridField = new GridField(
+			'Quicklinks',
+			'Quicklinks',
+			$this->Quicklinks(),
+			GridFieldConfig_RelationEditor::create());
+		$gridField->setModelClass('Quicklink');
+		$fields->addFieldToTab('Root.Quicklinks', $gridField);
+
+		$fields->removeByName('Translations');
+		$fields->removeByName('Import');
+
+		$fields->addFieldToTab('Root.Features',ToggleCompositeField::create('FeatureOne', _t('SiteTree.FeatureOne', 'Feature One'),
+			array(
+				new TextField('FeatureOneTitle', 'Title'),
+				new TreeDropdownField('FeatureOneLinkID', 'Page to link to', 'SiteTree'),
+				new HTMLEditorField('FeatureOneContent', 'Content')				
+				)
+			)->setHeadingLevel(3)
+		);
+
+		$fields->addFieldToTab('Root.Features',ToggleCompositeField::create('FeatureTwo', _t('SiteTree.FeatureTwo', 'Feature Two'),
+			array(
+				new TextField('FeatureTwoTitle', 'Title'),
+				new TreeDropdownField('FeatureTwoLinkID', 'Page to link to', 'SiteTree'),
+				new HTMLEditorField('FeatureTwoContent', 'Content')
+				)
+			)->setHeadingLevel(3)
+		);
+
+		
 
 		return $fields;
 	}
