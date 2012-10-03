@@ -119,30 +119,31 @@ Options:
 				<include name="**/**" />
 				<exclude name="assets" />
 				<exclude name="assets/**" />
-				<exclude name="mysite/local.conf.php" />
-				<exclude name="mysite/db.conf.php" />
+				<exclude name="_artifacts/**" />
+				<exclude name="releases/**" />
 				<exclude name="**/*.log" />
 				<exclude name="**/.svn/**" />
 				<exclude name="**/.git/**" />
-				<exclude name="**/.project" />  <!-- remove eclipse configuration file -->
+				<exclude name="**/.project" />
 				<exclude name="**/.buildpath" />
 				<exclude name="**/.settings" />
-				<exclude name="**/.idea/**" />  <!-- remove phpstorm configuration file -->
-				<exclude name="tools/**" />
+				<exclude name="**/.idea/**" />
 				<exclude name="**/tests/**" />
 				<exclude name="cms/docs/**" />
 				<exclude name="sapphire/docs/**" />
+				<!--<exclude name="mysite/docs/**" />-->
 				<exclude name="build.xml" />
-				<exclude name="dependent-modules*" />
-				<exclude name="changelog-definitions*" />
+				<exclude name="phpunit.xml" />
+				<exclude name="Capfile" />
 				<exclude name="_ss_environment.php" />
+				<exclude name="silverstripe-cache/**" />
+				<exclude name="themes/designs/**" />
+				<exclude name="tools/**" />
+				<exclude name="changelog-definitions*" />
+				<exclude name="mysite/local.conf.php" />
+				<exclude name="mysite/db.conf.php" />
 			</fileset>
 		</copy>
-
-		<!-- TODO Remove once we figured out how to nest git repositories for themes -->
-		<move file="${tmp}/${archivename}/themes/blackcandy/blackcandy_blog" todir="${tmp}/${archivename}/themes" haltonerror='false' />
-		<move file="${tmp}/${archivename}/themes/blackcandy/blackcandy_calendar" todir="${tmp}/${archivename}/themes" haltonerror='false' />
-		<move file="${tmp}/${archivename}/themes/blackcandy/blackcandy" todir="${tmp}/${archivename}/themes" haltonerror='false' />
 
 		<!-- create tar archive -->
 		<if>
