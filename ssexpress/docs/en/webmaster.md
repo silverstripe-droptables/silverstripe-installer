@@ -8,6 +8,7 @@ To install SilverStripe Express on your server:
 
 * Download SilverStripe Express tarball
 * Unpack it
+* Check that you have the required modules (listed in /dependent-modules) and fetch any that you don't have. Only cms, framework and themes/ssexpress are required, the rest offer optional functionality.
 * Amend `mysite/_config.php` to configure the database name
 * The site is ready to go
 
@@ -38,6 +39,7 @@ SilverStripe Express can be used to enhance an existing site:
 * Add the ssexpress folder to the root of the site like any other module
 * Update the mysite/_config.php with the options from any modules that you'd like to include (at the very least, the replacing of SiteConfig with CustomSiteConfig)
 * Alter all classes that inherit from SiteTree to inherit from ExpressPage instead
+* run /dev/build?flush=all
 
 This will provide the new page types (NewsPage, NewsHolder, AccessibilityPage, SitemapPage) as well as giving all the pages RSS feeds and the option to have an access key. You may face integration issues with an existing site search, this could remedied by overriding the results() function in the lowest-level Page class.
 
