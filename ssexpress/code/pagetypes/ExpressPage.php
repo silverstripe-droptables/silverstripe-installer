@@ -166,6 +166,31 @@ class ExpressPage_Controller extends ContentController {
 		Requirements::set_combined_files_folder(ASSETS_DIR."/_compiled/p");
 	}
 
+	/* 	Give external links the external class, and affix size and type 
+		prefixes to files.
+	*/
+	function Content() {
+		// Internal links.
+		preg_match_all('/<a.*href="\[file_link,id=([0-9]+)\].*".*>.*<\/a>/U', $this->Content, $matches);
+
+		for ($i = 0; $i < count($matches[0]); $i++){
+			$file = DataObject::get_by_id('File', $matches[1][$i]);
+			if ($file) {
+				$size = $file->getSize();
+				$ext = strtoupper($file->getExtension());
+				$newLink = $matches[0][$i] . "<span class='fileExt'> [$ext, $size]</span>";
+				$this->Content = str_replace($matches[0][$i], $newLink, $this->Content);
+			}
+		}
+
+		// and now external links
+		$pattern = '/<a href=\"(h[^\"]*)\">(.*)<\/a>/iU'; 
+		$replacement = '<a href="$1" class="external">$2</a>';
+		$this->Content = preg_replace($pattern, $replacement, $this->Content, -1);
+		
+		return $this->Content;
+	}
+
 	function index() {
 		// RSS feed for per-page changes.
 		if ($this->PublicHistory) {
