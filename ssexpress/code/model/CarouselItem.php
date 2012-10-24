@@ -35,6 +35,13 @@ class CarouselItem extends DataObject {
 
 		$fields->removeByName('ParentID');
 
+		$fields->insertBefore(			
+		$wrap = new CompositeField(
+			$extraLabel = new LabelField('Note', "Note: You will need to create the carousel item before you can add an image")
+		), 'Image');
+
+		$wrap->addExtraClass('alignExtraLabel');
+
 		return $fields;
 	}
 
