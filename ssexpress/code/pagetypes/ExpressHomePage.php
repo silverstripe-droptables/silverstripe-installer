@@ -35,7 +35,7 @@ class ExpressHomePage extends Page {
 		$gridField = new GridField(
 			'CarouselItems',
 			'Carousel',
-			$this->CarouselItems(),
+			$this->CarouselItems()->sort('Archived'),
 			GridFieldConfig_RelationEditor::create());
 		$gridField->setModelClass('CarouselItem');
 		$fields->addFieldToTab('Root.Carousel', $gridField);
