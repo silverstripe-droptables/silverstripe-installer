@@ -30,7 +30,7 @@ class NewsHolder_Controller extends Page_Controller {
 	public function getNewsItems($pageSize = 10) {
 		$items = DataObject::get('NewsPage', "ParentID = $this->ID")->sort('Date', 'DESC');
 		$category = $this->getCategory();
-		if ($category) $items->filter('CategoryID', $category->ID);
+		if ($category) $items = $items->filter('CategoryID', $category->ID);
 		$list = new PaginatedList($items, $this->request);
 		$list->setPageLength($pageSize);
 		return $list;
