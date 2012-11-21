@@ -40,7 +40,6 @@ class ExpressHomePage extends Page {
 		$gridField->setModelClass('CarouselItem');
 		$fields->addFieldToTab('Root.Carousel', $gridField);
 
-
 		$gridField = new GridField(
 			'Quicklinks',
 			'Quicklinks',
@@ -70,9 +69,11 @@ class ExpressHomePage extends Page {
 			)->setHeadingLevel(3)
 		);
 
-		
-
 		return $fields;
+	}
+
+	function getVisibleCarouselItems() {
+		return $this->CarouselItems()->filter('Archived', false);
 	}
 }
 
